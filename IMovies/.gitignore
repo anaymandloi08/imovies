@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Production
+/build
+/dist
+
+# Env
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
