@@ -1,0 +1,159 @@
+.userProfilePage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #121212;
+  color: #ffffff;
+
+  .profileContainer {
+    max-width: 600px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
+    width: 100%;
+
+    .profileCard {
+      background: #181818;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+
+      .avatarBanner {
+        height: 120px;
+        background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+        position: relative;
+        display: flex;
+        justify-content: center;
+
+        .avatarIconWrapper {
+          position: absolute;
+          bottom: -40px;
+          font-size: 5rem;
+          color: #fff;
+          background: #181818;
+          border-radius: 50%;
+          border: 4px solid #181818;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      .profileInfo {
+        padding: 3.5rem 2rem 2.5rem;
+        text-align: center;
+
+        h2 {
+          font-size: 1.8rem;
+          font-weight: 800;
+          margin: 0 0 0.3rem 0;
+        }
+
+        .emailText {
+          color: #888;
+          font-size: 0.95rem;
+          margin-bottom: 0.8rem;
+        }
+
+        .memberBadge {
+          background: rgba(229, 9, 20, 0.15);
+          color: #e50914;
+          font-size: 0.75rem;
+          font-weight: 800;
+          padding: 4px 12px;
+          border-radius: 20px;
+          letter-spacing: 1px;
+          display: inline-block;
+          margin-bottom: 2rem;
+        }
+
+        .quickStatsRow {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+          margin-bottom: 2rem;
+
+          .statBox {
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background: #2a2a2a;
+              border-color: #444;
+              transform: translateY(-2px);
+            }
+
+            .statIcon {
+              font-size: 1.8rem;
+              color: #4ade80;
+
+              &.fav {
+                color: #e50914;
+              }
+            }
+
+            .statLabel {
+              font-weight: 700;
+              font-size: 0.95rem;
+            }
+
+            .statSub {
+              font-size: 0.75rem;
+              color: #777;
+            }
+          }
+        }
+
+        .profileActions {
+          display: flex;
+          flex-direction: column;
+          gap: 0.8rem;
+
+          .btnEdit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #e50914;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-weight: 700;
+
+            &:hover {
+              background: #f40612;
+            }
+          }
+
+          .btnLogout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid #333;
+            color: #aaa;
+            padding: 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+
+            &:hover {
+              color: #e50914;
+              border-color: #e50914;
+            }
+          }
+        }
+      }
+    }
+  }
+}

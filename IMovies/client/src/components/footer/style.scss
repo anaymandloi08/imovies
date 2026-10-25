@@ -1,0 +1,97 @@
+.imoviesFooter {
+  background-color: #0d0d0d;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3rem 2rem 2rem;
+  color: #888888;
+  margin-top: auto;
+
+  .footerContainer {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 2.5rem;
+  }
+
+  .footerBrandCol {
+    .brandLogo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+
+      .brandI {
+        color: #e50914;
+      }
+
+      .brandMovies {
+        color: #ffffff;
+      }
+    }
+
+    .brandTagline {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #999999;
+      max-width: 380px;
+    }
+  }
+
+  .footerLinksCol {
+    h4 {
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.5px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 0.6rem;
+
+        a {
+          color: #888888;
+          text-decoration: none;
+          font-size: 0.9rem;
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: #e50914;
+          }
+        }
+      }
+    }
+
+    .socialIcons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      a {
+        color: #aaaaaa;
+        font-size: 1.2rem;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #e50914;
+        }
+      }
+    }
+
+    .copyNotice {
+      font-size: 0.8rem;
+      color: #666666;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .imoviesFooter .footerContainer {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

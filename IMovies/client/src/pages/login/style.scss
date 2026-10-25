@@ -1,0 +1,157 @@
+.authPageContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #1e1e1e 0%, #0a0a0a 100%);
+  padding: 2rem 1rem;
+  color: #ffffff;
+
+  .authCard {
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+
+    &.adminCard {
+      border-top: 4px solid #e50914;
+    }
+
+    .brandHeader {
+      text-align: center;
+      margin-bottom: 2rem;
+
+      .adminBadgeTag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(229, 9, 20, 0.15);
+        color: #e50914;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .brandLink {
+        text-decoration: none;
+        font-size: 2rem;
+        font-weight: 900;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+
+        .brandI {
+          color: #e50914;
+        }
+
+        .brandMovies {
+          color: #ffffff;
+        }
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+        color: #888888;
+      }
+    }
+
+    .authForm {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+
+      .formGroup {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #cccccc;
+        }
+
+        input {
+          background: #222222;
+          border: 1px solid #333333;
+          border-radius: 6px;
+          padding: 0.8rem 1rem;
+          color: #ffffff;
+          font-size: 0.95rem;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: #e50914;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+          }
+
+          &::placeholder {
+            color: #666666;
+          }
+        }
+      }
+
+      .submitBtn {
+        background: #e50914;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.9rem;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        transition: background 0.2s ease, transform 0.1s ease;
+
+        &:hover:not(:disabled) {
+          background: #f40612;
+        }
+
+        &:active:not(:disabled) {
+          transform: scale(0.99);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    .authFooter {
+      margin-top: 1.8rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888888;
+
+      a {
+        color: #e50914;
+        text-decoration: none;
+        font-weight: 600;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .adminPrompt {
+        margin-top: 0.8rem;
+        font-size: 0.8rem;
+        color: #666666;
+      }
+    }
+  }
+}

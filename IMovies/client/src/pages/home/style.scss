@@ -1,0 +1,432 @@
+.homePage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #121212;
+  color: #ffffff;
+
+  .heroBanner {
+    position: relative;
+    height: 480px;
+    background-size: cover;
+    background-position: center 25%;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 3.5rem;
+
+    .heroBackdropOverlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        0deg,
+        #121212 10%,
+        rgba(18, 18, 18, 0.7) 60%,
+        rgba(18, 18, 18, 0.4) 100%
+      );
+    }
+
+    .heroContent {
+      position: relative;
+      z-index: 5;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      width: 100%;
+
+      .trendingBadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #e50914;
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.8rem;
+      }
+
+      .featuredTitle {
+        font-size: 3.2rem;
+        font-weight: 900;
+        margin: 0 0 0.8rem 0;
+        line-height: 1.1;
+      }
+
+      .featuredMeta {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        font-size: 0.95rem;
+        color: #ccc;
+        margin-bottom: 1rem;
+
+        .ratingBadge {
+          color: #ffb703;
+          font-weight: 800;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .certBadge, .runtimeBadge {
+          background: rgba(255, 255, 255, 0.15);
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-weight: 600;
+          font-size: 0.8rem;
+        }
+      }
+
+      .featuredDesc {
+        max-width: 650px;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #aaa;
+        margin-bottom: 1.5rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .heroActions {
+        display: flex;
+        gap: 1rem;
+
+        .btnBookHero {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #e50914;
+          color: #fff;
+          text-decoration: none;
+          font-weight: 700;
+          padding: 0.8rem 1.8rem;
+          border-radius: 6px;
+          transition: background 0.2s ease, transform 0.1s ease;
+
+          &:hover {
+            background: #f40612;
+            transform: translateY(-2px);
+          }
+        }
+
+        .btnInfoHero {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.15);
+          color: #fff;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          font-weight: 600;
+          padding: 0.8rem 1.4rem;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background 0.2s ease;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.25);
+          }
+        }
+      }
+    }
+  }
+
+  .galleryContainer {
+    max-width: 1400px;
+    margin: 2rem auto 4rem;
+    padding: 0 2rem;
+    width: 100%;
+
+    .filterToolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+
+      .searchBox {
+        position: relative;
+        max-width: 500px;
+
+        .searchIcon {
+          position: absolute;
+          left: 1rem;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #777;
+        }
+
+        input {
+          width: 100%;
+          background: #1e1e1e;
+          border: 1px solid #333;
+          border-radius: 30px;
+          padding: 0.8rem 1rem 0.8rem 2.8rem;
+          color: #fff;
+          font-size: 0.95rem;
+
+          &:focus {
+            outline: none;
+            border-color: #e50914;
+          }
+        }
+      }
+
+      .genreTabs {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+
+        .genreTab {
+          background: #1c1c1c;
+          border: 1px solid #2e2e2e;
+          color: #aaa;
+          padding: 0.5rem 1.2rem;
+          border-radius: 20px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            color: #fff;
+            border-color: #555;
+          }
+
+          &.active {
+            background: #e50914;
+            color: #fff;
+            border-color: #e50914;
+          }
+        }
+      }
+    }
+
+    .sectionHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1.5rem;
+
+      h2 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin: 0;
+      }
+
+      .movieCount {
+        font-size: 0.9rem;
+        color: #888;
+      }
+    }
+
+    .moviesGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.8rem;
+
+      .movieCard {
+        background: #181818;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+
+          .cardPosterWrap .posterOverlay {
+            opacity: 1;
+          }
+        }
+
+        .cardPosterWrap {
+          position: relative;
+          aspect-ratio: 2/3;
+          overflow: hidden;
+          cursor: pointer;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .posterOverlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+
+            .btnQuickView {
+              background: #fff;
+              color: #000;
+              border: none;
+              padding: 0.5rem 1rem;
+              border-radius: 20px;
+              font-weight: 700;
+              font-size: 0.85rem;
+              cursor: pointer;
+            }
+          }
+
+          .cardRating {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            color: #ffb703;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+          }
+
+          .cardFavBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.1s ease;
+
+            &:hover {
+              color: #e50914;
+              transform: scale(1.1);
+            }
+          }
+        }
+
+        .cardDetails {
+          padding: 1.2rem;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+
+          .cardMetaRow {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+
+            .cardCert {
+              background: rgba(255, 255, 255, 0.1);
+              padding: 2px 6px;
+              border-radius: 3px;
+              color: #ddd;
+              font-weight: 700;
+            }
+          }
+
+          .cardTitle {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+
+            &:hover {
+              color: #e50914;
+            }
+          }
+
+          .cardGenres {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+
+            .genrePill {
+              background: rgba(229, 9, 20, 0.12);
+              color: #ff4d58;
+              font-size: 0.7rem;
+              padding: 2px 6px;
+              border-radius: 8px;
+            }
+          }
+
+          .cardActionButtons {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: auto;
+
+            .btnCardBook {
+              flex: 1;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 6px;
+              background: #e50914;
+              color: #fff;
+              text-decoration: none;
+              font-size: 0.85rem;
+              font-weight: 700;
+              padding: 0.6rem;
+              border-radius: 4px;
+              transition: background 0.2s ease;
+
+              &:hover {
+                background: #f40612;
+              }
+            }
+
+            .btnCardDetails {
+              background: #252525;
+              color: #ccc;
+              text-decoration: none;
+              font-size: 0.85rem;
+              font-weight: 600;
+              padding: 0.6rem 0.8rem;
+              border-radius: 4px;
+              transition: background 0.2s ease;
+
+              &:hover {
+                background: #333;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .emptyState {
+      padding: 4rem 2rem;
+      text-align: center;
+      color: #777;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .homePage .heroBanner .heroContent .featuredTitle {
+    font-size: 2.2rem;
+  }
+}

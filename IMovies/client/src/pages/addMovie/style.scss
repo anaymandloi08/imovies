@@ -1,0 +1,134 @@
+.addEntityPage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #121212;
+  color: #ffffff;
+
+  .formWrapper {
+    max-width: 800px;
+    margin: 2.5rem auto 4rem;
+    padding: 0 1.5rem;
+    width: 100%;
+
+    .formCard {
+      background: #181818;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+
+      .formHeader {
+        margin-bottom: 2rem;
+
+        .btnBack {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          color: #888;
+          text-decoration: none;
+          font-size: 0.85rem;
+          margin-bottom: 1rem;
+
+          &:hover {
+            color: #fff;
+          }
+        }
+
+        h2 {
+          font-size: 1.8rem;
+          font-weight: 800;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin: 0 0 0.3rem 0;
+
+          .icon {
+            color: #e50914;
+          }
+        }
+
+        p {
+          font-size: 0.9rem;
+          color: #888;
+          margin: 0;
+        }
+      }
+
+      .standardAdminForm {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+
+        .formGroup {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #bbb;
+          }
+
+          input, textarea, select {
+            background: #222;
+            border: 1px solid #383838;
+            border-radius: 6px;
+            padding: 0.8rem 1rem;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: inherit;
+
+            &:focus {
+              outline: none;
+              border-color: #e50914;
+            }
+          }
+        }
+
+        .formGridDouble {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.2rem;
+        }
+
+        .formGridTriple {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 1.2rem;
+        }
+
+        .btnSubmitForm {
+          background: #e50914;
+          color: #fff;
+          border: none;
+          padding: 1rem;
+          border-radius: 6px;
+          font-size: 1rem;
+          font-weight: 700;
+          cursor: pointer;
+          margin-top: 0.8rem;
+          transition: background 0.2s ease;
+
+          &:hover:not(:disabled) {
+            background: #f40612;
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .addEntityPage .formWrapper .formCard .standardAdminForm {
+    .formGridDouble, .formGridTriple {
+      grid-template-columns: 1fr;
+    }
+  }
+}

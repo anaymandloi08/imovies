@@ -1,0 +1,200 @@
+.favoriteShowsPage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #121212;
+  color: #ffffff;
+
+  .favoritesContainer {
+    max-width: 1400px;
+    margin: 2rem auto 4rem;
+    padding: 0 2rem;
+    width: 100%;
+
+    .favoritesHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+      .titleArea {
+        .eyebrow {
+          font-size: 0.8rem;
+          color: #e50914;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+        }
+
+        h1 {
+          font-size: 2.2rem;
+          font-weight: 900;
+          margin: 0.3rem 0 0 0;
+        }
+      }
+
+      .btnDiscover {
+        background: #252525;
+        color: #fff;
+        text-decoration: none;
+        padding: 0.8rem 1.4rem;
+        border-radius: 6px;
+        font-weight: 600;
+
+        &:hover {
+          background: #333;
+        }
+      }
+    }
+
+    .emptyWatchlist {
+      background: #181818;
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 5rem 2rem;
+      text-align: center;
+
+      .emptyHeartIcon {
+        font-size: 3.5rem;
+        color: #e50914;
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        color: #888;
+        margin-bottom: 2rem;
+      }
+
+      .btnExploreMovies {
+        display: inline-block;
+        background: #e50914;
+        color: #fff;
+        text-decoration: none;
+        padding: 0.8rem 1.8rem;
+        border-radius: 6px;
+        font-weight: 700;
+      }
+    }
+
+    .favoritesGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+
+      .favCard {
+        background: #181818;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        .favPoster {
+          position: relative;
+          aspect-ratio: 2/3;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .btnRemoveFav {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: #ff4d58;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            &:hover {
+              background: #e50914;
+              color: #fff;
+            }
+          }
+        }
+
+        .favDetails {
+          padding: 1.2rem;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+
+          .metaRow {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+
+            .rating {
+              color: #ffb703;
+              font-weight: 700;
+              display: flex;
+              align-items: center;
+              gap: 4px;
+            }
+
+            .cert {
+              background: rgba(255, 255, 255, 0.1);
+              padding: 2px 6px;
+              border-radius: 3px;
+            }
+          }
+
+          .movieTitle {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+          }
+
+          .desc {
+            font-size: 0.85rem;
+            color: #888;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 1.2rem;
+          }
+
+          .cardActions {
+            margin-top: auto;
+
+            .btnBook {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 6px;
+              background: #e50914;
+              color: #fff;
+              text-decoration: none;
+              padding: 0.7rem;
+              border-radius: 6px;
+              font-weight: 700;
+              font-size: 0.9rem;
+
+              &:hover {
+                background: #f40612;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

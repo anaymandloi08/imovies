@@ -1,0 +1,215 @@
+.landingPage {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1920&auto=format&fit=crop&q=80") center/cover no-repeat fixed;
+  color: #ffffff;
+  overflow: hidden;
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(10, 10, 10, 0.75) 0%, rgba(5, 5, 5, 0.95) 100%);
+    z-index: 1;
+  }
+
+  .landingHeader {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+
+    .brand {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+
+      .brandI {
+        color: #e50914;
+      }
+
+      .brandMovies {
+        color: #ffffff;
+      }
+    }
+
+    .headerActions {
+      display: flex;
+      gap: 1rem;
+
+      .btnNavLogin {
+        text-decoration: none;
+        background: #e50914;
+        color: #ffffff;
+        font-weight: 600;
+        padding: 0.5rem 1.4rem;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: #f40612;
+        }
+      }
+
+      .btnNavAdmin {
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        font-weight: 500;
+        padding: 0.5rem 1.2rem;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+  }
+
+  .landingHero {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+
+    .heroContent {
+      max-width: 800px;
+
+      .eyebrow {
+        color: #e50914;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        display: block;
+        margin-bottom: 1rem;
+      }
+
+      .heroTitle {
+        font-size: 4rem;
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(180deg, #ffffff 40%, #cccccc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .heroSubtitle {
+        font-size: 1.25rem;
+        line-height: 1.6;
+        color: #b3b3b3;
+        margin-bottom: 2.5rem;
+      }
+
+      .ctaButtons {
+        display: flex;
+        justify-content: center;
+        gap: 1.2rem;
+        margin-bottom: 3rem;
+
+        .btnCtaPrimary {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          text-decoration: none;
+          background: #e50914;
+          color: #ffffff;
+          font-size: 1.1rem;
+          font-weight: 700;
+          padding: 0.9rem 2.2rem;
+          border-radius: 6px;
+          box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
+          transition: transform 0.2s ease, background 0.2s ease;
+
+          &:hover {
+            background: #ff1e2b;
+            transform: translateY(-2px);
+          }
+        }
+
+        .btnCtaSecondary {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          text-decoration: none;
+          background: rgba(255, 255, 255, 0.12);
+          color: #ffffff;
+          font-size: 1.1rem;
+          font-weight: 600;
+          padding: 0.9rem 2.2rem;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          transition: background 0.2s ease, transform 0.2s ease;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: translateY(-2px);
+          }
+        }
+      }
+
+      .featuresPills {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        .pill {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(0, 0, 0, 0.6);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          font-size: 0.85rem;
+          color: #d1d1d1;
+
+          .pillDot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e50914;
+          }
+        }
+      }
+    }
+  }
+
+  .landingFooter {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.85rem;
+    color: #666666;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+}
+
+@media (max-width: 768px) {
+  .landingPage {
+    .landingHeader {
+      padding: 1.5rem;
+    }
+
+    .landingHero .heroContent {
+      .heroTitle {
+        font-size: 2.5rem;
+      }
+
+      .ctaButtons {
+        flex-direction: column;
+      }
+    }
+  }
+}

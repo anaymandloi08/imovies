@@ -1,50 +1,99 @@
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import MoviesPage from './pages/MoviesPage';
-import MovieDetailsPage from './pages/MovieDetailsPage';
-import SeatBookingPage from './pages/SeatBookingPage';
-import BookingConfirmationPage from './pages/BookingConfirmationPage';
-import MyBookingsPage from './pages/MyBookingsPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import UserProtection from "./components/protection/UserProtection";
+import AdminProtection from "./components/protection/AdminProtection";
 
-function App() {
+const Landing = lazy(() => import("./pages/landing/Landing"));
+const Login = lazy(() => import("./pages/login/Login"));
+const Register = lazy(() => import("./pages/register/Register"));
+const Home = lazy(() => import("./pages/home/Home"));
+const AddShow = lazy(() => import("./pages/addShow/AddShow"));
+const SeatsPage = lazy(() => import("./pages/seatsPage/SeatsPage"));
+const AdminLogin = lazy(() => import("./pages/login/AdminLogin"));
+const MovieDetails = lazy(() => import("./pages/movieDetails/MovieDetails"));
+const AddTheatre = lazy(() => import("./pages/addTheatre/AddTheatre"));
+const MovieShows = lazy(() => import("./pages/movieShows/MovieShows"));
+const Admin = lazy(() => import("./pages/admin/Admin"));
+const AddMovie = lazy(() => import("./pages/addMovie/AddMovie"));
+const FavoriteShows = lazy(() => import("./pages/favoriteshows/FavoriteShows"));
+const Profile = lazy(() => import("./pages/profile/Profile"));
+const AdminRegister = lazy(() => import("./pages/register/AdminRegister"));
+const Bookings = lazy(() => import("./pages/bookings/Bookings"));
+const EditUserDetails = lazy(() =>
+  import("./pages/editUserDetails/EditUserDetails")
+);
+const AdminBookings = lazy(() => import("./pages/adminBookings/AdminBookings"));
+
+import Loader from "./components/loader/Loader";
+
+const App = () => {
   return (
-    <div className="d-flex flex-column min-vh-100 bg-dark text-light">
-      <Navbar />
-
-      <main className="flex-grow-1">
+    <BrowserRouter>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <Suspense
+        fallback={
+          <div
+            className="loadingContainer"
+            style={{
+              minHeight: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#121212",
+            }}
+          >
+            <Loader />
+          </div>
+        }
+      >
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/movies" element={<MoviesPage />} />
-          <Route path="/movie/:id" element={<MovieDetailsPage />} />
-          <Route path="/booking/:showId" element={<SeatBookingPage />} />
-          <Route path="/booking-confirmation/:id" element={<BookingConfirmationPage />} />
-          <Route path="/my-bookings" element={<MyBookingsPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route
-            path="*"
-            element={
-              <div className="container py-5 text-center my-5">
-                <h1 className="display-1 text-danger fw-extrabold brand-font">404</h1>
-                <h3 className="text-white mb-3">Page Not Found</h3>
-                <p className="text-muted mb-4">The screen you are looking for does not exist or has been moved.</p>
-                <Link to="/" className="btn btn-cinema px-4 py-2">
-                  Return to Home
-                </Link>
-              </div>
-            }
-          />
-        </Routes>
-      </main>
+          {/* Public Pages */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/register" element={<AdminRegister />} />
+          <Route path="/movie/:movieName" element={<MovieDetails />} />
+          <Route path="/shows/:movieName" element={<MovieShows />} />
 
-      <Footer />
-    </div>
+          {/* User Protected Routes */}
+          <Route element={<UserProtection />}>
+            <Route path="/seats/:showId" element={<SeatsPage />} />
+            <Route path="/bookings" element={<Bookings />} />
+            <Route path="/favorites" element={<FavoriteShows />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/edit" element={<EditUserDetails />} />
+          </Route>
+
+          {/* Admin Protected Routes */}
+          <Route element={<AdminProtection />}>
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/add-movie" element={<AddMovie />} />
+            <Route path="/admin/add-theatre" element={<AddTheatre />} />
+            <Route path="/admin/add-show" element={<AddShow />} />
+            <Route path="/admin/bookings" element={<AdminBookings />} />
+          </Route>
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
