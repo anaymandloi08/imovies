@@ -11,12 +11,17 @@ import "./style.scss";
 const MovieDetailsPopup = ({ movie, onClose }) => {
   if (!movie) return null;
 
-  // Helper function to get the first available image URL (from Page 29)
-  const getImageUrl = (media) => {
-    if (!media) return "/default-movie.png";
-    if (typeof media === "string") return media;
-    const mediaItem = Array.isArray(media) ? media[0] : media;
-    return mediaItem?.url || mediaItem || "/default-movie.png";
+  // Helper function to get poster
+  const getImageUrl = (movieObj) => {
+    if (!movieObj) return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop&q=80";
+    if (movieObj.coverImage) return movieObj.coverImage;
+    if (movieObj.bannerImage) return movieObj.bannerImage;
+    if (movieObj.media) {
+      if (typeof movieObj.media === "string") return movieObj.media;
+      const mediaItem = Array.isArray(movieObj.media) ? movieObj.media[0] : movieObj.media;
+      return mediaItem?.url || mediaItem || "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop&q=80";
+    }
+    return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop&q=80";
   };
 
   const handleAddToWatchlist = async () => {
@@ -52,7 +57,7 @@ const MovieDetailsPopup = ({ movie, onClose }) => {
 
         <div className="popupContentGrid">
           <div className="popupPoster">
-            <img src={getImageUrl(movie.media)} alt={movie.movieName} />
+            <img src={getImageUrl(movie)} alt={movie.movieName} />
           </div>
 
           <div className="popupDetails">

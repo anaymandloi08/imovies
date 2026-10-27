@@ -2,8 +2,177 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #121212;
+  background-color: #0b0c10;
   color: #ffffff;
+
+  .movieShowsBanner {
+    position: relative;
+    background-size: cover;
+    background-position: center 25%;
+    padding: 2.5rem 2rem 3rem;
+
+    .bannerOverlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        0deg,
+        #0b0c10 5%,
+        rgba(11, 12, 16, 0.75) 60%,
+        rgba(11, 12, 16, 0.85) 100%
+      );
+    }
+
+    .bannerContent {
+      position: relative;
+      z-index: 5;
+      max-width: 1200px;
+      margin: 0 auto;
+
+      .btnBackNav {
+        background: rgba(14, 15, 20, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #d1d5db;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        backdrop-filter: blur(8px);
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: #fff;
+          border-color: rgba(255, 255, 255, 0.3);
+          transform: translateX(-2px);
+        }
+      }
+
+      .movieMetaCluster {
+        display: flex;
+        gap: 2rem;
+        align-items: flex-end;
+
+        .posterThumb {
+          width: 140px;
+          height: 200px;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          flex-shrink: 0;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .movieDetailsInfo {
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+
+          .badgeRow {
+            display: flex;
+            gap: 8px;
+
+            .imaxBadge {
+              background: rgba(56, 189, 248, 0.15);
+              border: 1px solid rgba(56, 189, 248, 0.4);
+              color: #38bdf8;
+              font-size: 0.72rem;
+              font-weight: 800;
+              padding: 2px 7px;
+              border-radius: 4px;
+            }
+
+            .certBadge {
+              background: rgba(255, 255, 255, 0.1);
+              color: #9ca3af;
+              font-size: 0.72rem;
+              font-weight: 700;
+              padding: 2px 7px;
+              border-radius: 4px;
+            }
+          }
+
+          .movieTitle {
+            font-size: 2.4rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin: 0;
+            line-height: 1.1;
+          }
+
+          .metaRow {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            font-size: 0.88rem;
+            color: #d1d5db;
+
+            .ratingBadge {
+              color: #f5c518;
+              font-weight: 800;
+              display: flex;
+              align-items: center;
+              gap: 4px;
+            }
+
+            .runtimeBadge {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              color: #9ca3af;
+            }
+
+            .genres {
+              color: #9ca3af;
+            }
+          }
+
+          .synopsis {
+            font-size: 0.92rem;
+            color: #9ca3af;
+            max-width: 650px;
+            line-height: 1.5;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          .btnTrailer {
+            align-self: flex-start;
+            background: rgba(229, 9, 20, 0.15);
+            border: 1px solid rgba(229, 9, 20, 0.4);
+            color: #ff6b6b;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 0.4rem;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background: #e50914;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
 
   .showsMainContainer {
     max-width: 1200px;
@@ -11,69 +180,20 @@
     padding: 0 2rem;
     width: 100%;
 
-    .showsHeaderBar {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-      .btnBack {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: #222;
-        border: 1px solid #333;
-        color: #fff;
-        padding: 8px 16px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-
-        &:hover {
-          background: #333;
-        }
-      }
-
-      .titleArea {
-        .subTitle {
-          font-size: 0.85rem;
-          color: #e50914;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-
-        .movieNameHeading {
-          font-size: 2rem;
-          font-weight: 800;
-          margin: 0.2rem 0 0 0;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-
-          .movieIcon {
-            color: #e50914;
-          }
-        }
-      }
-    }
-
     .dateFilterBar {
       display: flex;
       align-items: center;
       gap: 1.2rem;
-      background: #181818;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: #111218;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2.5rem;
 
       .filterLabel {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-weight: 700;
-        color: #aaa;
+        color: #9ca3af;
         display: flex;
         align-items: center;
         gap: 6px;
@@ -81,174 +201,237 @@
 
       .dateTabs {
         display: flex;
-        gap: 0.8rem;
         flex-wrap: wrap;
+        gap: 8px;
 
         .dateBtn {
-          background: #252525;
-          border: 1px solid #3a3a3a;
-          color: #ddd;
-          padding: 6px 14px;
-          border-radius: 6px;
+          background: #181a24;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #9ca3af;
+          padding: 0.55rem 1.2rem;
+          border-radius: 8px;
           font-size: 0.85rem;
-          font-weight: 600;
+          font-weight: 700;
           cursor: pointer;
           transition: all 0.2s ease;
 
           &:hover {
-            border-color: #666;
             color: #fff;
+            border-color: rgba(255, 255, 255, 0.25);
           }
 
           &.active {
             background: #e50914;
             border-color: #e50914;
-            color: #fff;
-          }
-        }
-      }
-    }
-
-    .theatreList {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-
-      .theatreCard {
-        background: #181818;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 10px;
-        padding: 1.8rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 2rem;
-        transition: border-color 0.2s ease;
-
-        &:hover {
-          border-color: rgba(229, 9, 20, 0.4);
-        }
-
-        .theatreInfo {
-          .theatreName {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin: 0 0 0.4rem 0;
-            color: #fff;
-          }
-
-          .theatreLoc {
-            font-size: 0.85rem;
-            color: #888;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 0.8rem;
-          }
-
-          .priceTags {
-            display: flex;
-            gap: 0.8rem;
-
-            span {
-              font-size: 0.75rem;
-              background: #222;
-              border: 1px solid #333;
-              padding: 3px 8px;
-              border-radius: 4px;
-              color: #bbb;
-            }
-          }
-        }
-
-        .showtimeSlots {
-          display: flex;
-          gap: 1rem;
-          flex-wrap: wrap;
-
-          .timeSlotBtn {
-            background: #222;
-            border: 1px solid #383838;
-            border-radius: 8px;
-            padding: 0.8rem 1.2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 120px;
-
-            .slotTime {
-              font-size: 1.1rem;
-              font-weight: 800;
-              color: #4ade80;
-            }
-
-            .slotDate {
-              font-size: 0.75rem;
-              color: #888;
-            }
-
-            .slotAvail {
-              font-size: 0.75rem;
-              color: #e50914;
-              font-weight: 600;
-              display: flex;
-              align-items: center;
-              gap: 4px;
-              margin-top: 4px;
-            }
-
-            &:hover {
-              background: #2a2a2a;
-              border-color: #4ade80;
-              transform: translateY(-2px);
-            }
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(229, 9, 20, 0.4);
           }
         }
       }
     }
 
     .noShowsBox {
-      background: #181818;
-      border-radius: 12px;
+      background: #111218;
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
       padding: 4rem 2rem;
       text-align: center;
-      border: 1px dashed rgba(255, 255, 255, 0.15);
 
       .offIcon {
         font-size: 3.5rem;
-        color: #e50914;
+        color: #4b5563;
         margin-bottom: 1rem;
       }
 
       h3 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
+        font-weight: 800;
         margin-bottom: 0.5rem;
       }
 
       p {
-        color: #888;
-        margin-bottom: 1.8rem;
+        color: #9ca3af;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
       }
 
       .btnExplore {
-        display: inline-block;
         background: #e50914;
         color: #fff;
         text-decoration: none;
-        padding: 0.8rem 1.8rem;
-        border-radius: 6px;
+        padding: 0.7rem 1.6rem;
+        border-radius: 8px;
         font-weight: 700;
+      }
+    }
+
+    .theatreList {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+
+      .theatreCard {
+        background: #12131b;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+        .theatreInfo {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+          .theatreHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            .theatreName {
+              font-size: 1.3rem;
+              font-weight: 800;
+              margin: 0;
+            }
+
+            .amenityBadges {
+              display: flex;
+              gap: 6px;
+
+              .amenity {
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                color: #9ca3af;
+                font-size: 0.72rem;
+                font-weight: 600;
+                padding: 2px 7px;
+                border-radius: 4px;
+              }
+            }
+          }
+
+          .theatreLoc {
+            color: #9ca3af;
+            font-size: 0.88rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+
+          .priceTags {
+            display: flex;
+            gap: 1.2rem;
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
+
+            .priceBalcony {
+              color: #f5c518;
+              font-weight: 700;
+            }
+
+            .priceMiddle {
+              color: #818cf8;
+              font-weight: 700;
+            }
+
+            .priceLower {
+              color: #9ca3af;
+              font-weight: 600;
+            }
+          }
+        }
+
+        .showtimeSlots {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+
+          .timeSlotBtn {
+            background: #181a24;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 0.8rem 1.4rem;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-width: 130px;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background: #202330;
+              border-color: #e50914;
+              transform: translateY(-3px);
+              box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 12px rgba(229, 9, 20, 0.25);
+            }
+
+            .slotTime {
+              font-size: 1.1rem;
+              font-weight: 900;
+              color: #ffffff;
+            }
+
+            .slotDate {
+              font-size: 0.72rem;
+              color: #9ca3af;
+              font-weight: 600;
+            }
+
+            .slotStatus {
+              font-size: 0.68rem;
+              font-weight: 800;
+              padding: 2px 6px;
+              border-radius: 4px;
+              margin-top: 4px;
+              text-transform: uppercase;
+
+              &.available {
+                background: rgba(16, 185, 129, 0.15);
+                color: #34d399;
+                border: 1px solid rgba(16, 185, 129, 0.3);
+              }
+
+              &.filling {
+                background: rgba(245, 158, 11, 0.15);
+                color: #fbbf24;
+                border: 1px solid rgba(245, 158, 11, 0.3);
+              }
+            }
+          }
+        }
       }
     }
   }
 }
 
-@media (max-width: 850px) {
-  .movieShowsPage .showsMainContainer .theatreList .theatreCard {
-    flex-direction: column;
-    align-items: flex-start;
+@media (max-width: 768px) {
+  .movieShowsPage {
+    .movieShowsBanner {
+      .bannerContent {
+        .movieMetaCluster {
+          flex-direction: column;
+          align-items: flex-start;
+
+          .posterThumb {
+            width: 100px;
+            height: 145px;
+          }
+
+          .movieDetailsInfo {
+            .movieTitle {
+              font-size: 1.8rem;
+            }
+          }
+        }
+      }
+    }
   }
 }

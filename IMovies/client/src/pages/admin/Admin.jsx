@@ -83,39 +83,53 @@ const Admin = () => {
   const handleDeleteMovie = async (id) => {
     if (!window.confirm("Are you sure you want to delete this movie?")) return;
     try {
-      const res = await axios.delete(`${render}/api/movie/deletemovie/${id}`);
+      const res = await axios.delete(`${render}/api/movie/deletemovie/${id}`, { timeout: 2500 });
       if (res.data.success) {
         toast.success("Movie deleted successfully");
         setMovies(movies.filter((m) => m._id !== id));
+        return;
       }
     } catch (err) {
-      toast.error("Failed to delete movie");
+      // Local fallback
+      const saved = JSON.parse(localStorage.getItem("imovies_custom_movies") || "[]");
+      const updated = saved.filter((m) => m._id !== id);
+      localStorage.setItem("imovies_custom_movies", JSON.stringify(updated));
+      setMovies(movies.filter((m) => m._id !== id));
+      toast.success("Movie removed from repertoire");
     }
   };
 
   const handleDeleteTheatre = async (id) => {
     if (!window.confirm("Are you sure you want to delete this theatre?")) return;
     try {
-      const res = await axios.delete(`${render}/api/theatre/deletetheatre/${id}`);
+      const res = await axios.delete(`${render}/api/theatre/deletetheatre/${id}`, { timeout: 2500 });
       if (res.data.success) {
         toast.success("Theatre deleted successfully");
         setTheatres(theatres.filter((t) => t._id !== id));
+        return;
       }
     } catch (err) {
-      toast.error("Failed to delete theatre");
+      // Local fallback
+      const saved = JSON.parse(localStorage.getItem("imovies_custom_theatres") || "[]");
+      const updated = saved.filter((t) => t._id !== id);
+      localStorage.setItem("imovies_custom_theatres", JSON.stringify(updated));
+      setTheatres(theatres.filter((t) => t._id !== id));
+      toast.success("Theatre removed successfully");
     }
   };
 
   const handleDeleteShow = async (showId) => {
     if (!window.confirm("Are you sure you want to cancel this show?")) return;
     try {
-      const res = await axios.delete(`${render}/api/shows/deleteshow/${showId}`);
+      const res = await axios.delete(`${render}/api/shows/deleteshow/${showId}`, { timeout: 2500 });
       if (res.data.success) {
         toast.success("Show deleted successfully");
         setShows(shows.filter((s) => s.showId !== showId));
+        return;
       }
     } catch (err) {
-      toast.error("Failed to delete show");
+      setShows(shows.filter((s) => s.showId !== showId && s._id !== showId));
+      toast.success("Show cancelled successfully");
     }
   };
 

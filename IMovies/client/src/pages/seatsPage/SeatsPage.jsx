@@ -4,7 +4,20 @@ import dayjs from "dayjs";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
-import { FaArrowLeft, FaCheckCircle, FaCreditCard, FaLock, FaTicketAlt, FaTv } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaCheckCircle,
+  FaCreditCard,
+  FaLock,
+  FaTicketAlt,
+  FaTv,
+  FaTimes,
+  FaTrashAlt,
+  FaShieldAlt,
+  FaQrcode,
+  FaRegCreditCard,
+  FaBuilding,
+} from "react-icons/fa";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import Loader from "../../components/loader/Loader";
@@ -29,9 +42,9 @@ const SeatsPage = () => {
   // Seat pricing
   const prices = useMemo(() => {
     return {
-      balcony: show?.tickets?.balconySeatPrice || theatre?.balconySeatPrice || 350,
-      middle: show?.tickets?.middleSeatPrice || theatre?.middleSeatPrice || 220,
-      lower: show?.tickets?.lowerSeatPrice || theatre?.lowerSeatPrice || 150,
+      balcony: show?.tickets?.balconySeatPrice || theatre?.balconySeatPrice || 450,
+      middle: show?.tickets?.middleSeatPrice || theatre?.middleSeatPrice || 280,
+      lower: show?.tickets?.lowerSeatPrice || theatre?.lowerSeatPrice || 180,
     };
   }, [show, theatre]);
 
@@ -50,11 +63,20 @@ const SeatsPage = () => {
       setSelectedSeats(selectedSeats.filter((s) => s !== seatCode));
     } else {
       if (selectedSeats.length >= 8) {
-        toast.warning("You can select a maximum of 8 seats per reservation.");
+        toast.warning("Maximum 8 seats allowed per booking transaction.");
         return;
       }
       setSelectedSeats([...selectedSeats, seatCode]);
     }
+  };
+
+  const removeSingleSeat = (seatCode, e) => {
+    e.stopPropagation();
+    setSelectedSeats(selectedSeats.filter((s) => s !== seatCode));
+  };
+
+  const clearAllSeats = () => {
+    setSelectedSeats([]);
   };
 
   const calculateSeatPrice = (seatCode) => {
@@ -64,18 +86,29 @@ const SeatsPage = () => {
     return prices.lower;
   };
 
-  const totalPrice = useMemo(() => {
+  const getSeatTier = (seatCode) => {
+    const row = seatCode.charAt(0);
+    if (balconyRows.includes(row)) return "Balcony Club";
+    if (middleRows.includes(row)) return "Middle Executive";
+    return "Lower Classic";
+  };
+
+  const ticketSubtotal = useMemo(() => {
     return selectedSeats.reduce((sum, seat) => sum + calculateSeatPrice(seat), 0);
   }, [selectedSeats, prices]);
 
+  const convenienceFee = selectedSeats.length > 0 ? 30 : 0;
+  const gstAmount = selectedSeats.length > 0 ? Math.round(convenienceFee * 0.18) : 0;
+  const grandTotal = ticketSubtotal + convenienceFee + gstAmount;
+
   const handleProceedToPayment = () => {
     if (selectedSeats.length === 0) {
-      toast.error("Please select at least one seat to proceed.");
+      toast.error("Please pick your seats before checking out.");
       return;
     }
     const rawUser = localStorage.getItem("imovies_user");
     if (!rawUser) {
-      toast.info("Please login to complete your booking");
+      toast.info("Please sign in to confirm your booking");
       navigate("/login");
       return;
     }
@@ -86,7 +119,7 @@ const SeatsPage = () => {
     e.preventDefault();
     const rawUser = localStorage.getItem("imovies_user");
     if (!rawUser) {
-      toast.error("User session expired. Please sign in again.");
+      toast.error("Session timed out. Please sign in again.");
       navigate("/login");
       return;
     }
@@ -97,7 +130,10 @@ const SeatsPage = () => {
 
     const ticketsData = {
       seats: selectedSeats,
-      totalPrice,
+      totalPrice: grandTotal,
+      subtotal: ticketSubtotal,
+      convenienceFee,
+      gst: gstAmount,
       paymentMethod,
       theatreName: show?.theatreName || theatre?.theatreName,
       movieName: movie?.movieName || show?.movieId,
@@ -125,7 +161,7 @@ const SeatsPage = () => {
         return;
       }
     } catch (err) {
-      // Offline/Demo fallback: save directly to browser storage
+      // Offline fallback: save to localStorage
       const savedBookings = JSON.parse(
         localStorage.getItem("imovies_bookings") || "[]"
       );
@@ -135,13 +171,15 @@ const SeatsPage = () => {
         userEmail: user.email,
         showId: show?.showId || showId,
         ticketsData,
+        movieDetails: movie,
+        theatreDetails: theatre,
         status: "confirmed",
         createdAt: new Date().toISOString(),
       };
       savedBookings.unshift(localBooking);
       localStorage.setItem("imovies_bookings", JSON.stringify(savedBookings));
 
-      toast.success("Booking confirmed! Your tickets are ready.");
+      toast.success("Booking confirmed! Your e-ticket is generated.");
       setShowPaymentModal(false);
       navigate("/bookings");
       return;
@@ -168,7 +206,7 @@ const SeatsPage = () => {
           <h2>Show not found</h2>
           <p>{error || "Unable to retrieve seat layout for this show."}</p>
           <button onClick={() => navigate("/home")} className="btnReturn">
-            Return to Movies
+            Return to Cinema
           </button>
         </div>
         <Footer />
@@ -196,7 +234,9 @@ const SeatsPage = () => {
                 className={`seatButton ${seatClass} tier-${tierName}`}
                 onClick={() => handleSeatClick(seatCode)}
                 disabled={isBooked}
-                title={`${seatCode} - ₹${calculateSeatPrice(seatCode)} (${isBooked ? "Booked" : "Available"})`}
+                title={`${seatCode} (${getSeatTier(seatCode)}) - ₹${calculateSeatPrice(
+                  seatCode
+                )} ${isBooked ? "• Booked" : "• Click to select"}`}
               >
                 {colNum}
               </button>
@@ -215,12 +255,13 @@ const SeatsPage = () => {
       <main className="seatsLayoutContainer">
         <div className="topInfoBanner">
           <button onClick={() => navigate(-1)} className="btnBack">
-            <FaArrowLeft /> Back
+            <FaArrowLeft /> Back to Shows
           </button>
           <div className="movieShowMeta">
             <h2>{movie?.movieName || show?.movieId}</h2>
             <p>
-              {show.theatreName} | {dayjs(show.showdate).format("dddd, MMM D, YYYY")} at {show.showtime}
+              {show.theatreName} • Screen 1 (IMAX) •{" "}
+              {dayjs(show.showdate).format("dddd, MMM D, YYYY")} at {show.showtime}
             </p>
           </div>
         </div>
@@ -228,8 +269,9 @@ const SeatsPage = () => {
         <div className="seatingAndSummaryGrid">
           {/* Main Seating Plan */}
           <div className="screenAndSeatsSection">
-            {/* Curved Cinema Screen */}
+            {/* Curved Cinema Screen with Projection Light Beam */}
             <div className="cinemaScreenWrapper">
+              <div className="projectionBeam"></div>
               <div className="screenCurve"></div>
               <p className="screenNotice">
                 <FaTv /> ALL EYES THIS WAY — CINEMA SCREEN
@@ -237,10 +279,13 @@ const SeatsPage = () => {
             </div>
 
             {/* Balcony Section */}
-            <div className="tierSection">
+            <div className="tierSection tierBalcony">
               <div className="tierHeader">
-                <h4>BALCONY SECTION</h4>
-                <span className="tierPrice">₹{prices.balcony} per ticket</span>
+                <div className="tierTitle">
+                  <span className="tierBadge balconyBadge">PREMIUM</span>
+                  <h4>BALCONY RECLINERS</h4>
+                </div>
+                <span className="tierPrice">₹{prices.balcony}</span>
               </div>
               <div className="rowsBlock">
                 {balconyRows.map((r) => renderSeatRow(r, "balcony"))}
@@ -248,10 +293,13 @@ const SeatsPage = () => {
             </div>
 
             {/* Middle Section */}
-            <div className="tierSection">
+            <div className="tierSection tierMiddle">
               <div className="tierHeader">
-                <h4>MIDDLE SECTION</h4>
-                <span className="tierPrice">₹{prices.middle} per ticket</span>
+                <div className="tierTitle">
+                  <span className="tierBadge middleBadge">POPULAR</span>
+                  <h4>MIDDLE EXECUTIVE</h4>
+                </div>
+                <span className="tierPrice">₹{prices.middle}</span>
               </div>
               <div className="rowsBlock">
                 {middleRows.map((r) => renderSeatRow(r, "middle"))}
@@ -259,10 +307,13 @@ const SeatsPage = () => {
             </div>
 
             {/* Lower Section */}
-            <div className="tierSection">
+            <div className="tierSection tierLower">
               <div className="tierHeader">
-                <h4>LOWER SECTION</h4>
-                <span className="tierPrice">₹{prices.lower} per ticket</span>
+                <div className="tierTitle">
+                  <span className="tierBadge lowerBadge">STANDARD</span>
+                  <h4>LOWER CLASSIC</h4>
+                </div>
+                <span className="tierPrice">₹{prices.lower}</span>
               </div>
               <div className="rowsBlock">
                 {lowerRows.map((r) => renderSeatRow(r, "lower"))}
@@ -281,49 +332,105 @@ const SeatsPage = () => {
               </div>
               <div className="legendItem">
                 <span className="legendBox booked"></span>
-                <span>Occupied</span>
+                <span>Sold Out</span>
+              </div>
+              <div className="legendItem">
+                <span className="legendBox balconyLegend"></span>
+                <span>VIP Recliner</span>
               </div>
             </div>
           </div>
 
           {/* Checkout & Summary Sidebar */}
           <aside className="bookingSummaryPanel">
-            <h3>Booking Summary</h3>
+            <div className="panelHeaderRow">
+              <h3>Booking Summary</h3>
+              {selectedSeats.length > 0 && (
+                <button
+                  className="btnClearSeats"
+                  onClick={clearAllSeats}
+                  title="Deselect all seats"
+                >
+                  <FaTrashAlt /> Clear
+                </button>
+              )}
+            </div>
+
             <div className="summaryCard">
               <div className="summaryItem">
                 <span className="itemLabel">Movie</span>
-                <span className="itemVal highlight">{movie?.movieName || show?.movieId}</span>
+                <span className="itemVal highlight">
+                  {movie?.movieName || show?.movieId}
+                </span>
               </div>
               <div className="summaryItem">
-                <span className="itemLabel">Cinema</span>
+                <span className="itemLabel">Cinema Venue</span>
                 <span className="itemVal">{show.theatreName}</span>
               </div>
               <div className="summaryItem">
                 <span className="itemLabel">Date & Time</span>
                 <span className="itemVal">
-                  {dayjs(show.showdate).format("MMM D")} | {show.showtime}
+                  {dayjs(show.showdate).format("MMM D")} • {show.showtime}
                 </span>
               </div>
 
               <hr className="divider" />
 
-              <div className="summaryItem">
-                <span className="itemLabel">Selected Seats</span>
-                <span className="itemVal seatsPill">
-                  {selectedSeats.length > 0 ? selectedSeats.join(", ") : "None"}
-                </span>
+              <div className="selectedSeatsBlock">
+                <div className="seatsBlockHeader">
+                  <span>Selected Seats ({selectedSeats.length}/8)</span>
+                </div>
+                {selectedSeats.length === 0 ? (
+                  <p className="noSeatsSelected">
+                    Click any available seat above to add to your reservation.
+                  </p>
+                ) : (
+                  <div className="seatChipsGrid">
+                    {selectedSeats.map((seat) => (
+                      <div key={seat} className="seatChip">
+                        <span className="chipCode">{seat}</span>
+                        <span className="chipPrice">
+                          ₹{calculateSeatPrice(seat)}
+                        </span>
+                        <button
+                          className="btnRemoveChip"
+                          onClick={(e) => removeSingleSeat(seat, e)}
+                          title="Remove seat"
+                        >
+                          <FaTimes />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              <div className="summaryItem">
-                <span className="itemLabel">Total Tickets</span>
-                <span className="itemVal">{selectedSeats.length}</span>
+              <hr className="divider" />
+
+              <div className="pricingBreakdown">
+                <div className="priceRow">
+                  <span>Tickets Subtotal</span>
+                  <span>₹{ticketSubtotal}</span>
+                </div>
+                {selectedSeats.length > 0 && (
+                  <>
+                    <div className="priceRow feeRow">
+                      <span>Convenience Fee</span>
+                      <span>₹{convenienceFee}</span>
+                    </div>
+                    <div className="priceRow feeRow">
+                      <span>Integrated GST (18%)</span>
+                      <span>₹{gstAmount}</span>
+                    </div>
+                  </>
+                )}
               </div>
 
               <hr className="divider" />
 
               <div className="summaryItem totalLine">
-                <span>Subtotal Amount</span>
-                <span className="priceTotal">₹{totalPrice}</span>
+                <span>Grand Total</span>
+                <span className="priceTotal">₹{grandTotal}</span>
               </div>
 
               <button
@@ -331,84 +438,134 @@ const SeatsPage = () => {
                 onClick={handleProceedToPayment}
                 disabled={selectedSeats.length === 0}
               >
-                <FaLock /> Proceed to Payment (₹{totalPrice})
+                <FaLock /> Check Out (₹{grandTotal})
               </button>
 
-              <p className="guarantee">
-                <FaCheckCircle /> 100% Secure & Guaranteed Reservation
-              </p>
+              <div className="guarantee">
+                <FaShieldAlt className="shieldIcon" />
+                <span>Encrypted 256-Bit SSL Instant Ticket Lock</span>
+              </div>
             </div>
           </aside>
         </div>
       </main>
 
-      {/* Payment Gateway Modal (Sections 4 & 5) */}
+      {/* Payment Gateway Modal */}
       {showPaymentModal && (
-        <div className="paymentModalOverlay" onClick={() => setShowPaymentModal(false)}>
-          <div className="paymentModalCard" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="paymentModalOverlay"
+          onClick={() => setShowPaymentModal(false)}
+        >
+          <div
+            className="paymentModalCard"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="modalHeader">
-              <h3>Secure Payment Gateway</h3>
-              <button className="btnClose" onClick={() => setShowPaymentModal(false)}>
+              <div className="headerTitleGroup">
+                <FaShieldAlt className="shieldIcon" />
+                <h3>Complete Cinema Reservation</h3>
+              </div>
+              <button
+                className="btnClose"
+                onClick={() => setShowPaymentModal(false)}
+              >
                 ✕
               </button>
             </div>
 
             <div className="paymentDetails">
               <div className="payAmountBox">
-                <span>Amount to Pay</span>
-                <span className="payValue">₹{totalPrice}</span>
+                <div>
+                  <span className="amountLabel">Total Payable</span>
+                  <p className="amountMeta">
+                    {selectedSeats.length} {selectedSeats.length === 1 ? "Ticket" : "Tickets"} • {movie?.movieName || show?.movieId}
+                  </p>
+                </div>
+                <span className="payValue">₹{grandTotal}</span>
               </div>
 
               <div className="paymentMethodSelect">
-                <label>Select Payment Method:</label>
+                <label>Choose Payment Method:</label>
                 <div className="methodOptions">
                   <button
                     type="button"
-                    className={`methodBtn ${paymentMethod === "card" ? "active" : ""}`}
+                    className={`methodBtn ${
+                      paymentMethod === "card" ? "active" : ""
+                    }`}
                     onClick={() => setPaymentMethod("card")}
                   >
-                    <FaCreditCard /> Credit / Debit Card
+                    <FaRegCreditCard /> Card
                   </button>
                   <button
                     type="button"
-                    className={`methodBtn ${paymentMethod === "upi" ? "active" : ""}`}
+                    className={`methodBtn ${
+                      paymentMethod === "upi" ? "active" : ""
+                    }`}
                     onClick={() => setPaymentMethod("upi")}
                   >
-                    UPI / QR Code
+                    <FaQrcode /> UPI / GPay
                   </button>
                   <button
                     type="button"
-                    className={`methodBtn ${paymentMethod === "netbanking" ? "active" : ""}`}
+                    className={`methodBtn ${
+                      paymentMethod === "netbanking" ? "active" : ""
+                    }`}
                     onClick={() => setPaymentMethod("netbanking")}
                   >
-                    Net Banking
+                    <FaBuilding /> Net Banking
                   </button>
                 </div>
               </div>
 
               {paymentMethod === "card" && (
                 <div className="cardSimFields">
-                  <input type="text" placeholder="Card Number (4000 1234 5678 9010)" defaultValue="4242 •••• •••• 4242" />
+                  <div className="fieldGroup">
+                    <label>Card Number</label>
+                    <input
+                      type="text"
+                      placeholder="4242 •••• •••• 4242"
+                      defaultValue="4242 •••• •••• 4242"
+                    />
+                  </div>
                   <div className="splitInputs">
-                    <input type="text" placeholder="MM/YY" defaultValue="12/28" />
-                    <input type="password" placeholder="CVV" defaultValue="789" />
+                    <div className="fieldGroup">
+                      <label>Expiry</label>
+                      <input type="text" placeholder="MM/YY" defaultValue="08/29" />
+                    </div>
+                    <div className="fieldGroup">
+                      <label>CVV / CVC</label>
+                      <input type="password" placeholder="•••" defaultValue="888" />
+                    </div>
                   </div>
                 </div>
               )}
 
               {paymentMethod === "upi" && (
                 <div className="upiSimField">
-                  <input type="text" placeholder="Enter UPI ID (e.g. user@okhdfcbank)" defaultValue="cinemafan@upi" />
+                  <div className="fieldGroup">
+                    <label>Virtual Payment Address (VPA / UPI ID)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. yourname@oksbi"
+                      defaultValue="moviefan@okhdfc"
+                    />
+                  </div>
+                  <div className="upiQrBadge">
+                    <FaQrcode className="qrIcon" />
+                    <span>Instant payment supported via Google Pay, PhonePe, and Paytm.</span>
+                  </div>
                 </div>
               )}
 
               {paymentMethod === "netbanking" && (
                 <div className="netBankingSelect">
+                  <label>Select Bank</label>
                   <select defaultValue="HDFC">
                     <option value="HDFC">HDFC Bank</option>
                     <option value="ICICI">ICICI Bank</option>
                     <option value="SBI">State Bank of India</option>
                     <option value="AXIS">Axis Bank</option>
+                    <option value="KOTAK">Kotak Mahindra Bank</option>
                   </select>
                 </div>
               )}
@@ -418,7 +575,11 @@ const SeatsPage = () => {
                 onClick={handleConfirmBooking}
                 disabled={processingBooking}
               >
-                {processingBooking ? "Processing Payment & Locking Seats..." : `Pay ₹${totalPrice} & Confirm Booking`}
+                {processingBooking ? (
+                  <span className="spinnerWrapper">Securing Seats...</span>
+                ) : (
+                  `Authorize & Pay ₹${grandTotal}`
+                )}
               </button>
             </div>
           </div>

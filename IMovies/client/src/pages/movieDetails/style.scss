@@ -1,498 +1,360 @@
-// Styles for MovieDetails and MovieDetailsPopup
-.popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-}
-
-.movie-details-popup {
-  position: relative;
-  background: #181818;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  width: 100%;
-  max-width: 850px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
-  padding: 2rem;
-  color: #fff;
-
-  .close-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: #fff;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background 0.2s ease;
-
-    &:hover {
-      background: #e50914;
-    }
-  }
-
-  .popupContentGrid {
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    gap: 2rem;
-
-    .popupPoster img {
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-      aspect-ratio: 2/3;
-      object-fit: cover;
-    }
-
-    .popupDetails {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-      .tagRow {
-        display: flex;
-        gap: 0.5rem;
-
-        .certTag, .langTag {
-          background: rgba(255, 255, 255, 0.15);
-          font-size: 0.75rem;
-          font-weight: 700;
-          padding: 3px 8px;
-          border-radius: 4px;
-        }
-      }
-
-      .popupTitle {
-        font-size: 1.8rem;
-        font-weight: 800;
-        margin: 0;
-      }
-
-      .metaRow {
-        display: flex;
-        align-items: center;
-        gap: 1.2rem;
-        font-size: 0.9rem;
-        color: #aaa;
-
-        .ratingBadge {
-          color: #ffb703;
-          font-weight: 700;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-
-        .runtime {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-        }
-      }
-
-      .genresList {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-
-        .genreBadge {
-          background: rgba(229, 9, 20, 0.15);
-          color: #ff4d58;
-          border: 1px solid rgba(229, 9, 20, 0.3);
-          font-size: 0.8rem;
-          padding: 3px 10px;
-          border-radius: 12px;
-        }
-      }
-
-      .synopsis {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        color: #ccc;
-      }
-
-      .trailerSection {
-        h4 {
-          font-size: 0.95rem;
-          color: #fff;
-          margin-bottom: 0.5rem;
-        }
-
-        .videoFrame {
-          position: relative;
-          padding-bottom: 56.25%;
-          height: 0;
-          border-radius: 6px;
-          overflow: hidden;
-
-          iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-          }
-        }
-      }
-
-      .popupActions {
-        display: flex;
-        gap: 1rem;
-        margin-top: 0.5rem;
-
-        .btnBookShow {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: #e50914;
-          color: #fff;
-          text-decoration: none;
-          font-weight: 700;
-          padding: 0.75rem 1.5rem;
-          border-radius: 6px;
-          transition: background 0.2s ease;
-
-          &:hover {
-            background: #f40612;
-          }
-        }
-
-        .btnFavorite {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: rgba(255, 255, 255, 0.1);
-          color: #fff;
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          font-weight: 600;
-          padding: 0.75rem 1.2rem;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background 0.2s ease;
-
-          &:hover {
-            background: rgba(255, 255, 255, 0.2);
-          }
-        }
-      }
-    }
-  }
-}
-
-// Standalone MovieDetails Page
 .movieDetailsPage {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #121212;
+  background-color: #0b0c10;
   color: #ffffff;
 
   .movieHeroBackdrop {
     position: relative;
-    height: 380px;
     background-size: cover;
     background-position: center 20%;
+    padding: 2rem 2rem 4rem;
 
-    .backdropOverlay {
+    .heroBackdropOverlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(18, 18, 18, 0.4) 0%, #121212 100%);
+      background: linear-gradient(
+        0deg,
+        #0b0c10 5%,
+        rgba(11, 12, 16, 0.75) 50%,
+        rgba(11, 12, 16, 0.9) 100%
+      );
     }
 
-    .backdropContent {
+    .heroContentContainer {
       position: relative;
       z-index: 5;
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 1.5rem 2rem;
 
-      .btnGoBack {
+      .btnBackNav {
+        background: rgba(14, 15, 20, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #d1d5db;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: rgba(0, 0, 0, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
-        padding: 6px 14px;
-        border-radius: 20px;
         font-size: 0.85rem;
-        cursor: pointer;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(8px);
+        transition: all 0.2s ease;
 
         &:hover {
-          background: rgba(255, 255, 255, 0.2);
+          color: #fff;
+          border-color: rgba(255, 255, 255, 0.3);
+          transform: translateX(-2px);
+        }
+      }
+
+      .mainPresentation {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 3rem;
+        align-items: flex-start;
+
+        .posterCard {
+          position: relative;
+          border-radius: 14px;
+          overflow: hidden;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          aspect-ratio: 2/3;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .btnFavPoster {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(11, 12, 16, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            transition: all 0.2s ease;
+
+            &:hover {
+              color: #e50914;
+              transform: scale(1.15);
+            }
+
+            &.active {
+              color: #e50914;
+              background: rgba(229, 9, 20, 0.2);
+              border-color: #e50914;
+            }
+          }
+        }
+
+        .infoBlock {
+          display: flex;
+          flex-direction: column;
+          gap: 0.9rem;
+
+          .badgeRow {
+            display: flex;
+            gap: 8px;
+
+            .imaxTag {
+              background: rgba(56, 189, 248, 0.15);
+              border: 1px solid rgba(56, 189, 248, 0.4);
+              color: #38bdf8;
+              font-size: 0.72rem;
+              font-weight: 800;
+              padding: 3px 8px;
+              border-radius: 4px;
+            }
+
+            .certTag {
+              background: rgba(255, 255, 255, 0.1);
+              color: #9ca3af;
+              font-size: 0.72rem;
+              font-weight: 700;
+              padding: 3px 8px;
+              border-radius: 4px;
+            }
+          }
+
+          .title {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin: 0;
+            line-height: 1.1;
+          }
+
+          .metaRow {
+            display: flex;
+            align-items: center;
+            gap: 1.4rem;
+            font-size: 0.95rem;
+            color: #d1d5db;
+
+            .ratingBadge {
+              color: #f5c518;
+              font-weight: 800;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            }
+
+            .runtime, .releaseDate {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              color: #9ca3af;
+            }
+          }
+
+          .genresRow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            .genrePill {
+              background: rgba(255, 255, 255, 0.08);
+              color: #d1d5db;
+              font-size: 0.8rem;
+              font-weight: 600;
+              padding: 3px 10px;
+              border-radius: 999px;
+            }
+          }
+
+          .description {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            margin: 0.5rem 0;
+          }
+
+          .director, .cast {
+            font-size: 0.92rem;
+            color: #9ca3af;
+            margin: 0;
+
+            strong {
+              color: #ffffff;
+            }
+          }
+
+          .actionRow {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.2rem;
+
+            .btnBookTickets {
+              display: inline-flex;
+              align-items: center;
+              gap: 10px;
+              background: #e50914;
+              color: #ffffff;
+              text-decoration: none;
+              font-weight: 800;
+              font-size: 1rem;
+              padding: 0.9rem 2rem;
+              border-radius: 10px;
+              box-shadow: 0 6px 20px rgba(229, 9, 20, 0.45);
+              transition: all 0.2s ease;
+
+              &:hover {
+                background: #f40612;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(229, 9, 20, 0.6);
+              }
+            }
+
+            .btnTrailerHero {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              background: rgba(255, 255, 255, 0.12);
+              border: 1px solid rgba(255, 255, 255, 0.25);
+              color: #ffffff;
+              font-weight: 700;
+              font-size: 1rem;
+              padding: 0.9rem 1.6rem;
+              border-radius: 10px;
+              cursor: pointer;
+              transition: all 0.2s ease;
+
+              &:hover {
+                background: rgba(255, 255, 255, 0.22);
+                border-color: #fff;
+              }
+            }
+          }
         }
       }
     }
   }
 
-  .movieMainContainer {
-    max-width: 1400px;
-    margin: -140px auto 3rem;
+  .detailsBody {
+    max-width: 1200px;
+    margin: 2rem auto 4rem;
     padding: 0 2rem;
-    position: relative;
-    z-index: 10;
     width: 100%;
 
-    .movieHeaderGrid {
+    .detailsSectionsGrid {
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 1fr 360px;
       gap: 3rem;
 
-      .posterColumn {
-        .moviePosterImg {
-          width: 100%;
-          border-radius: 12px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-          border: 2px solid rgba(255, 255, 255, 0.1);
-          aspect-ratio: 2/3;
-          object-fit: cover;
-        }
-      }
-
-      .infoColumn {
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-        justify-content: flex-end;
-
-        .badgeLine {
-          display: flex;
-          gap: 0.5rem;
-
-          .cert, .lang {
-            background: rgba(255, 255, 255, 0.15);
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 4px;
-          }
-        }
-
-        .movieTitle {
-          font-size: 2.8rem;
-          font-weight: 900;
-          line-height: 1.1;
-          margin: 0;
-        }
-
-        .metaStats {
+      .reviewsColumn {
+        .sectionHeader {
           display: flex;
           align-items: center;
-          gap: 2rem;
-          color: #cccccc;
-          font-size: 0.95rem;
-
-          .statItem {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-
-            .star {
-              color: #ffb703;
-              font-size: 1.1rem;
-            }
-
-            .bold {
-              font-weight: 800;
-              color: #fff;
-              font-size: 1.1rem;
-            }
-
-            .dim {
-              color: #888;
-            }
-          }
-        }
-
-        .genreChips {
-          display: flex;
-          gap: 0.6rem;
-          flex-wrap: wrap;
-
-          .genreChip {
-            background: rgba(229, 9, 20, 0.15);
-            color: #ff4d58;
-            border: 1px solid rgba(229, 9, 20, 0.3);
-            padding: 4px 12px;
-            border-radius: 16px;
-            font-size: 0.85rem;
-            font-weight: 600;
-          }
-        }
-
-        .synopsisBox {
-          margin-top: 0.5rem;
+          justify-content: space-between;
+          margin-bottom: 1.5rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
           h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: #ddd;
-          }
-
-          p {
-            font-size: 1rem;
-            line-height: 1.7;
-            color: #aaa;
-          }
-        }
-
-        .ctaActionRow {
-          display: flex;
-          gap: 1rem;
-          margin-top: 1rem;
-
-          .btnBookTickets {
-            display: inline-flex;
+            font-size: 1.35rem;
+            font-weight: 800;
+            display: flex;
             align-items: center;
             gap: 10px;
-            background: #e50914;
-            color: #fff;
-            text-decoration: none;
-            padding: 0.9rem 2rem;
-            border-radius: 6px;
-            font-size: 1.05rem;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
-            transition: background 0.2s ease, transform 0.1s ease;
-
-            &:hover {
-              background: #f40612;
-              transform: translateY(-2px);
-            }
           }
 
-          .btnWatchlist {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 0.9rem 1.5rem;
-            border-radius: 6px;
-            font-size: 1rem;
+          .reviewCount {
+            color: #9ca3af;
+            font-size: 0.88rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s ease;
-
-            &:hover {
-              background: rgba(255, 255, 255, 0.2);
-            }
           }
         }
-      }
-    }
 
-    .trailerSection {
-      margin-top: 3.5rem;
+        .reviewForm {
+          background: #12131b;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 14px;
+          padding: 1.5rem;
+          margin-bottom: 2rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
 
-      h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-      }
-
-      .videoEmbed {
-        position: relative;
-        padding-bottom: 50%;
-        height: 0;
-        border-radius: 10px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        max-width: 900px;
-
-        iframe {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          border: 0;
-        }
-      }
-    }
-
-    .reviewsSection {
-      margin-top: 3.5rem;
-
-      h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .reviewsGrid {
-        display: grid;
-        grid-template-columns: 360px 1fr;
-        gap: 2.5rem;
-
-        .addReviewCard {
-          background: #181818;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 10px;
-          padding: 1.8rem;
-
-          h3 {
-            font-size: 1.15rem;
-            margin-bottom: 1.2rem;
+          h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
           }
 
-          form {
+          .ratingSelector {
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #9ca3af;
 
-            .formField {
+            .starsGroup {
               display: flex;
-              flex-direction: column;
-              gap: 0.4rem;
+              gap: 4px;
 
-              label {
-                font-size: 0.85rem;
-                color: #aaa;
-              }
+              .starBtn {
+                background: transparent;
+                border: none;
+                color: #4b5563;
+                font-size: 1.2rem;
+                cursor: pointer;
+                padding: 0;
 
-              select, textarea {
-                background: #252525;
-                border: 1px solid #333;
-                border-radius: 6px;
-                padding: 0.7rem;
-                color: #fff;
-                font-family: inherit;
-
-                &:focus {
-                  outline: none;
-                  border-color: #e50914;
+                &.selected {
+                  color: #f5c518;
                 }
               }
             }
 
-            .btnSubmitReview {
-              background: #e50914;
-              color: #fff;
-              border: none;
-              padding: 0.8rem;
-              border-radius: 6px;
-              font-weight: 700;
-              cursor: pointer;
-              transition: background 0.2s ease;
+            .ratingNumber {
+              color: #f5c518;
+              font-weight: 800;
+            }
+          }
 
-              &:hover {
-                background: #f40612;
-              }
+          textarea {
+            width: 100%;
+            background: #0b0c10;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            outline: none;
+            resize: vertical;
+
+            &:focus {
+              border-color: #e50914;
+            }
+          }
+
+          .btnSubmitReview {
+            align-self: flex-start;
+            background: #e50914;
+            color: #fff;
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+
+            &:hover:not(:disabled) {
+              background: #f40612;
             }
           }
         }
@@ -503,85 +365,159 @@
           gap: 1rem;
 
           .noReviews {
-            background: #181818;
-            border-radius: 10px;
-            padding: 2.5rem;
             text-align: center;
-            color: #777;
-
-            .dimIcon {
-              font-size: 2.5rem;
-              margin-bottom: 0.8rem;
-            }
+            padding: 2.5rem;
+            background: #111218;
+            border-radius: 12px;
+            color: #9ca3af;
           }
 
-          .reviewItem {
-            background: #181818;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
+          .reviewCard {
+            background: #12131b;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
             padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
 
-            .reviewHead {
+            .reviewTop {
               display: flex;
+              align-items: center;
               justify-content: space-between;
-              margin-bottom: 0.5rem;
 
-              .reviewerName {
-                font-weight: 700;
-                color: #fff;
+              .userCluster {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .userIcon {
+                  color: #9ca3af;
+                  font-size: 1.1rem;
+                }
+
+                .reviewerName {
+                  font-weight: 700;
+                  font-size: 0.92rem;
+                }
               }
 
-              .reviewStars {
-                color: #ffb703;
-                letter-spacing: 2px;
+              .reviewRating {
+                color: #f5c518;
+                font-size: 0.82rem;
+                display: flex;
+                gap: 2px;
               }
             }
 
             .reviewComment {
-              font-size: 0.95rem;
+              font-size: 0.92rem;
+              color: #cbd5e1;
               line-height: 1.5;
-              color: #ccc;
-              margin-bottom: 0.5rem;
+              margin: 0;
             }
 
             .reviewDate {
               font-size: 0.75rem;
-              color: #666;
+              color: #6b7280;
+            }
+          }
+        }
+      }
+
+      .cinemaDetailsColumn {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        .cinemaFeatureCard, .quickBookingPrompt {
+          background: #12131b;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 14px;
+          padding: 1.6rem;
+
+          h4 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin: 0 0 1rem 0;
+          }
+
+          .techList {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .techItem {
+              strong {
+                font-size: 0.9rem;
+                color: #f3f4f6;
+                display: block;
+              }
+
+              p {
+                font-size: 0.82rem;
+                color: #9ca3af;
+                margin: 2px 0 0 0;
+              }
+            }
+          }
+        }
+
+        .quickBookingPrompt {
+          p {
+            font-size: 0.88rem;
+            color: #9ca3af;
+            margin-bottom: 1.2rem;
+          }
+
+          .btnQuickBook {
+            background: #e50914;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(229, 9, 20, 0.4);
+
+            &:hover {
+              background: #f40612;
             }
           }
         }
       }
     }
   }
-
-  .notFoundContainer {
-    padding: 6rem 2rem;
-    text-align: center;
-
-    .btnBack {
-      display: inline-block;
-      margin-top: 1.5rem;
-      background: #e50914;
-      color: #fff;
-      text-decoration: none;
-      padding: 0.7rem 1.5rem;
-      border-radius: 6px;
-    }
-  }
 }
 
 @media (max-width: 900px) {
-  .movie-details-popup .popupContentGrid {
-    grid-template-columns: 1fr;
-  }
+  .movieDetailsPage {
+    .movieHeroBackdrop {
+      .heroContentContainer {
+        .mainPresentation {
+          grid-template-columns: 1fr;
 
-  .movieDetailsPage .movieMainContainer {
-    .movieHeaderGrid {
-      grid-template-columns: 1fr;
+          .posterCard {
+            max-width: 220px;
+          }
+
+          .infoBlock {
+            .title {
+              font-size: 2.2rem;
+            }
+          }
+        }
+      }
     }
 
-    .reviewsSection .reviewsGrid {
-      grid-template-columns: 1fr;
+    .detailsBody {
+      .detailsSectionsGrid {
+        grid-template-columns: 1fr;
+      }
     }
   }
 }

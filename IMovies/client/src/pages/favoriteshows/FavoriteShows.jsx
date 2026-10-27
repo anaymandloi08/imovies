@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { FaHeart, FaTicketAlt, FaTrashAlt, FaStar } from "react-icons/fa";
+import { FaHeart, FaTicketAlt, FaTrashAlt, FaStar, FaFilm } from "react-icons/fa";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import Loader from "../../components/loader/Loader";
 import { render } from "../../host";
+import { mockMovies } from "../../data/mockData";
 import "./style.scss";
 
 const FavoriteShows = () => {
@@ -22,12 +23,17 @@ const FavoriteShows = () => {
     const user = JSON.parse(rawUser);
 
     try {
-      const res = await axios.get(`${render}/api/favorite/userfavorites/${encodeURIComponent(user.email)}`);
+      const res = await axios.get(
+        `${render}/api/favorite/userfavorites/${encodeURIComponent(user.email)}`,
+        { timeout: 2500 }
+      );
       if (res.data.success) {
         setFavorites(res.data.favorites || []);
       }
     } catch (err) {
-      console.error("Fetch favorites error:", err);
+      console.warn("Watchlist fetch failed, falling back to local storage:", err.message);
+      const saved = JSON.parse(localStorage.getItem("imovies_favorites") || "[]");
+      setFavorites(saved);
     } finally {
       setLoading(false);
     }
@@ -37,96 +43,119 @@ const FavoriteShows = () => {
     fetchFavorites();
   }, []);
 
-  const handleRemove = async (movieId) => {
+  const handleRemove = async (movieId, movieName) => {
+    // Local update
+    const saved = JSON.parse(localStorage.getItem("imovies_favorites") || "[]");
+    const updated = saved.filter(
+      (f) => f.movieId !== movieId && f.movieName !== movieName
+    );
+    localStorage.setItem("imovies_favorites", JSON.stringify(updated));
+    setFavorites(updated);
+    toast.info("Removed from watchlist");
+
     const rawUser = localStorage.getItem("imovies_user");
     if (!rawUser) return;
     const user = JSON.parse(rawUser);
 
     try {
-      const res = await axios.post(`${render}/api/favorite/remove`, {
-        userEmail: user.email,
-        movieId,
-      });
-      if (res.data.success) {
-        toast.info("Removed from watchlist");
-        setFavorites(favorites.filter((f) => f.movieId !== movieId));
-      }
+      await axios.post(
+        `${render}/api/favorite/remove`,
+        {
+          userEmail: user.email,
+          movieId,
+        },
+        { timeout: 2000 }
+      );
     } catch (err) {
-      toast.error("Failed to remove");
+      // Local copy is updated
     }
   };
 
   const getPoster = (fav) => {
     const movie = fav.movie || fav.movieData || {};
+    const movieName = fav.movieName || movie.movieName || "";
+
+    const matched = mockMovies.find(
+      (m) => m.movieName.toLowerCase() === movieName.toLowerCase()
+    );
+    if (matched?.coverImage) return matched.coverImage;
+    if (matched?.bannerImage) return matched.bannerImage;
+
+    if (movie.coverImage) return movie.coverImage;
+    if (movie.bannerImage) return movie.bannerImage;
     if (movie.media) {
       if (typeof movie.media === "string") return movie.media;
       return movie.media[0]?.url || movie.media;
     }
-    return "/default-movie.png";
+    return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop&q=80";
   };
 
   return (
-    <div className="favoriteShowsPage">
+    <div className="favoritesPage">
       <Header />
 
       <main className="favoritesContainer">
-        <div className="favoritesHeader">
-          <div className="titleArea">
-            <span className="eyebrow">SAVED FOR LATER</span>
+        <div className="favHeader">
+          <div className="titleCluster">
+            <span className="eyebrow">SAVED BLOCKBUSTERS</span>
             <h1>My Watchlist</h1>
           </div>
-          <Link to="/home" className="btnDiscover">
-            Explore More
-          </Link>
+          <span className="countBadge">{favorites.length} Saved</span>
         </div>
 
         {loading ? (
           <Loader />
         ) : favorites.length === 0 ? (
           <div className="emptyWatchlist">
-            <FaHeart className="emptyHeartIcon" />
+            <FaHeart className="emptyIcon" />
             <h3>Your Watchlist is Empty</h3>
-            <p>Save upcoming movies or blockbusters you want to watch soon.</p>
-            <Link to="/home" className="btnExploreMovies">
-              Browse Current Movies
+            <p>Save movies you want to watch so you never miss their premiere in theatres.</p>
+            <Link to="/home" className="btnExplore">
+              <FaFilm /> Browse Current Movies
             </Link>
           </div>
         ) : (
-          <div className="favoritesGrid">
+          <div className="favGrid">
             {favorites.map((fav) => {
               const movie = fav.movie || fav.movieData || {};
-              const movieName = movie.movieName || fav.movieId;
+              const movieName = fav.movieName || movie.movieName || "Movie";
+              const movieId = fav.movieId || movie._id || movieName;
+              const poster = getPoster(fav);
 
               return (
-                <div key={fav._id} className="favCard">
-                  <div className="favPoster">
-                    <img src={getPoster(fav)} alt={movieName} />
+                <div key={movieId} className="favCard">
+                  <div className="favPosterWrap">
+                    <img src={poster} alt={movieName} />
                     <button
                       className="btnRemoveFav"
-                      title="Remove from Watchlist"
-                      onClick={() => handleRemove(fav.movieId)}
+                      title="Remove from watchlist"
+                      onClick={() => handleRemove(movieId, movieName)}
                     >
                       <FaTrashAlt />
                     </button>
                   </div>
 
                   <div className="favDetails">
+                    <h3 className="movieTitle">{movieName}</h3>
                     <div className="metaRow">
                       <span className="rating">
-                        <FaStar /> {movie.rating || 8.5}
+                        <FaStar /> {movie.rating || 8.8}
                       </span>
-                      <span className="cert">{movie.certification || "UA"}</span>
+                      <span className="runtime">{movie.duration || "2h 30m"}</span>
                     </div>
 
-                    <h3 className="movieTitle">{movieName}</h3>
-                    <p className="desc">{movie.description || "Exciting cinematic experience."}</p>
-
-                    <div className="cardActions">
+                    <div className="btnRow">
                       <Link
                         to={`/shows/${encodeURIComponent(movieName)}`}
                         className="btnBook"
                       >
                         <FaTicketAlt /> Book Tickets
+                      </Link>
+                      <Link
+                        to={`/movie/${encodeURIComponent(movieName)}`}
+                        className="btnDetails"
+                      >
+                        Details
                       </Link>
                     </div>
                   </div>

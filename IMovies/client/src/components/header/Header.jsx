@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
-import { FaFilm, FaHeart, FaTicketAlt, FaUserCircle, FaSignOutAlt, FaShieldAlt } from "react-icons/fa";
+import {
+  FaFilm,
+  FaHeart,
+  FaTicketAlt,
+  FaUserCircle,
+  FaSignOutAlt,
+  FaShieldAlt,
+  FaCompass,
+} from "react-icons/fa";
 import "./style.scss";
 
 const Header = () => {
@@ -9,6 +17,8 @@ const Header = () => {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [watchlistCount, setWatchlistCount] = useState(0);
+  const [bookingCount, setBookingCount] = useState(0);
 
   useEffect(() => {
     const rawUser = localStorage.getItem("imovies_user");
@@ -27,6 +37,16 @@ const Header = () => {
       setIsAdmin(true);
     } else {
       setIsAdmin(false);
+    }
+
+    // Load dynamic counts
+    try {
+      const favs = JSON.parse(localStorage.getItem("imovies_favorites") || "[]");
+      setWatchlistCount(favs.length);
+      const bks = JSON.parse(localStorage.getItem("imovies_bookings") || "[]");
+      setBookingCount(bks.length);
+    } catch (e) {
+      // ignore
     }
   }, [location]);
 
@@ -49,27 +69,57 @@ const Header = () => {
           <Link to="/home" className="brandLink">
             <span className="brandI">i</span>
             <span className="brandMovies">Movies</span>
-            <span className="badgeLive">CINEMA</span>
+            <span className="badgeLive">
+              <span className="liveDot"></span> LIVE CINEMA
+            </span>
           </Link>
         </div>
 
         <nav className="navLinks">
-          <Link to="/home" className={`navItem ${location.pathname === "/home" ? "active" : ""}`}>
-            <FaFilm className="icon" /> Movies
+          <Link
+            to="/home"
+            className={`navItem ${location.pathname === "/home" ? "active" : ""}`}
+          >
+            <FaFilm className="icon" />
+            <span>Movies</span>
           </Link>
-          <Link to="/favorites" className={`navItem ${location.pathname === "/favorites" ? "active" : ""}`}>
-            <FaHeart className="icon" /> Watchlist
+
+          <Link
+            to="/favorites"
+            className={`navItem ${location.pathname === "/favorites" ? "active" : ""}`}
+          >
+            <FaHeart className="icon" />
+            <span>Watchlist</span>
+            {watchlistCount > 0 && (
+              <span className="countPill">{watchlistCount}</span>
+            )}
           </Link>
-          <Link to="/bookings" className={`navItem ${location.pathname === "/bookings" ? "active" : ""}`}>
-            <FaTicketAlt className="icon" /> Bookings
+
+          <Link
+            to="/bookings"
+            className={`navItem ${location.pathname === "/bookings" ? "active" : ""}`}
+          >
+            <FaTicketAlt className="icon" />
+            <span>My Tickets</span>
+            {bookingCount > 0 && (
+              <span className="countPill">{bookingCount}</span>
+            )}
           </Link>
+
           {isAdmin ? (
-            <Link to="/admin" className={`navItem adminBadge ${location.pathname.startsWith("/admin") ? "active" : ""}`}>
-              <FaShieldAlt className="icon" /> Admin Panel
+            <Link
+              to="/admin"
+              className={`navItem adminBadge ${
+                location.pathname.startsWith("/admin") ? "active" : ""
+              }`}
+            >
+              <FaShieldAlt className="icon" />
+              <span>Admin Dashboard</span>
             </Link>
           ) : (
             <Link to="/admin/login" className="navItem adminLink">
-              <FaShieldAlt className="icon" /> Admin
+              <FaShieldAlt className="icon" />
+              <span>Admin</span>
             </Link>
           )}
         </nav>
@@ -78,17 +128,27 @@ const Header = () => {
           {user ? (
             <div className="userCluster">
               <Link to="/profile" className="profileLink" title="User Profile">
-                <FaUserCircle className="userIcon" />
+                <div className="userAvatarBadge">
+                  {user.username ? user.username.charAt(0).toUpperCase() : "U"}
+                </div>
                 <span className="userName">{user.username}</span>
               </Link>
-              <button onClick={handleLogout} className="logoutBtn" title="Logout">
+              <button
+                onClick={handleLogout}
+                className="logoutBtn"
+                title="Sign Out"
+              >
                 <FaSignOutAlt />
               </button>
             </div>
           ) : (
             <div className="authButtons">
-              <Link to="/login" className="btnSecondary">Sign In</Link>
-              <Link to="/register" className="btnPrimary">Sign Up</Link>
+              <Link to="/login" className="btnSecondary">
+                Sign In
+              </Link>
+              <Link to="/register" className="btnPrimary">
+                Get Started
+              </Link>
             </div>
           )}
         </div>
