@@ -6,7 +6,7 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
 
-BASE_DIR = r"c:\Users\DELL\Downloads\phase wise example-20261022T103220Z-1-001\IMovies\SkillWallet_Submissions"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def set_cell_background(cell, hex_color):
     shading_elm = parse_xml(f'<w:shd {nsdecls("w")} w:fill="{hex_color}"/>')

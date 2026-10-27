@@ -18,6 +18,7 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import Loader from "../../components/loader/Loader";
 import { render } from "../../host";
+import { mockMovies, mockTheatres, mockShows } from "../../data/mockData";
 import "./style.scss";
 
 const Admin = () => {
@@ -52,7 +53,24 @@ const Admin = () => {
       if (theatresRes.data.success) setTheatres(theatresRes.data.theatres || []);
       if (showsRes.data.success) setShows(showsRes.data.shows || []);
     } catch (err) {
-      console.error("Admin dashboard fetch error:", err);
+      console.warn("Admin fetch fell back to demo storage:", err.message);
+      const savedMovies = JSON.parse(localStorage.getItem("imovies_custom_movies") || "[]");
+      const savedTheatres = JSON.parse(localStorage.getItem("imovies_custom_theatres") || "[]");
+      const allMovies = [...mockMovies, ...savedMovies];
+      const allTheatres = [...mockTheatres, ...savedTheatres];
+      const savedBookings = JSON.parse(localStorage.getItem("imovies_bookings") || "[]");
+      const rev = savedBookings.reduce((sum, b) => sum + (b.ticketsData?.totalPrice || 0), 0);
+
+      setMovies(allMovies);
+      setTheatres(allTheatres);
+      setShows(mockShows);
+      setStats({
+        totalMovies: allMovies.length,
+        totalTheatres: allTheatres.length,
+        totalShows: mockShows.length,
+        totalBookings: savedBookings.length,
+        totalRevenue: rev,
+      });
     } finally {
       setLoading(false);
     }

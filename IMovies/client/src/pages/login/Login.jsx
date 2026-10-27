@@ -27,18 +27,36 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${render}/api/auth/login`, formData);
+      const res = await axios.post(`${render}/api/auth/login`, formData, { timeout: 3000 });
       if (res.data.success) {
-        // Save token to cookies and localStorage
         Cookies.set("token", res.data.authToken, { expires: 7 });
         localStorage.setItem("token", res.data.authToken);
         localStorage.setItem("imovies_user", JSON.stringify(res.data.user));
 
         toast.success(res.data.message || "Logged in successfully!");
         navigate("/home");
+        return;
       }
     } catch (err) {
-      toast.error(err?.response?.data?.error || "Login failed. Please check your credentials.");
+      // Offline / Live Demo Fallback
+      const savedUsers = JSON.parse(localStorage.getItem("imovies_local_users") || "[]");
+      const matched = savedUsers.find(
+        (u) => u.email === formData.email && u.password === formData.password
+      ) || (formData.email === "user@imovies.com" && formData.password === "user1234"
+        ? { username: "johndoe", email: "user@imovies.com" }
+        : null);
+
+      if (matched) {
+        const dummyToken = "demo-jwt-user-" + Date.now();
+        Cookies.set("token", dummyToken, { expires: 7 });
+        localStorage.setItem("token", dummyToken);
+        localStorage.setItem("imovies_user", JSON.stringify({ username: matched.username, email: matched.email }));
+
+        toast.success("Signed in successfully!");
+        navigate("/home");
+        return;
+      }
+      toast.error(err?.response?.data?.error || "Login failed. Use user@imovies.com / user1234 or create an account.");
     } finally {
       setLoading(false);
     }

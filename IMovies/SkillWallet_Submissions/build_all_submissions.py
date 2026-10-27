@@ -6,7 +6,7 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
 
-BASE_DIR = r"c:\Users\DELL\Downloads\phase wise example-20261022T103220Z-1-001\IMovies\SkillWallet_Submissions"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 os.makedirs(BASE_DIR, exist_ok=True)
 
 epics = {

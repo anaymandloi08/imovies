@@ -21,8 +21,9 @@ const AdminBookings = () => {
         setBookings(res.data.bookings || []);
       }
     } catch (err) {
-      console.error("Admin fetch bookings error:", err);
-      toast.error("Failed to load customer reservations");
+      console.warn("Admin fetch bookings fallback:", err.message);
+      const saved = JSON.parse(localStorage.getItem("imovies_bookings") || "[]");
+      setBookings(saved);
     } finally {
       setLoading(false);
     }

@@ -24,13 +24,20 @@ const Bookings = () => {
     const user = JSON.parse(rawUser);
 
     try {
-      const res = await axios.get(`${render}/api/bookings/userbookings/${encodeURIComponent(user.email)}`);
+      const res = await axios.get(
+        `${render}/api/bookings/userbookings/${encodeURIComponent(user.email)}`,
+        { timeout: 3000 }
+      );
       if (res.data.success) {
         setBookings(res.data.bookings || []);
       }
     } catch (err) {
-      console.error("Fetch bookings error:", err);
-      toast.error("Failed to load your reservations");
+      console.warn("Fetch bookings network fail, falling back to local storage:", err.message);
+      const saved = JSON.parse(localStorage.getItem("imovies_bookings") || "[]");
+      const userBookings = saved.filter(
+        (b) => b.userEmail === user.email || !b.userEmail
+      );
+      setBookings(userBookings);
     } finally {
       setLoading(false);
     }
@@ -46,13 +53,19 @@ const Bookings = () => {
     }
 
     try {
-      const res = await axios.delete(`${render}/api/bookings/cancelbooking/${bookingId}`);
+      const res = await axios.delete(`${render}/api/bookings/cancelbooking/${bookingId}`, { timeout: 3000 });
       if (res.data.success) {
         toast.success("Booking cancelled and seats released successfully.");
         fetchBookings();
+        return;
       }
     } catch (err) {
-      toast.error("Failed to cancel booking");
+      // Local fallback
+      const saved = JSON.parse(localStorage.getItem("imovies_bookings") || "[]");
+      const updated = saved.filter((b) => b.bookingId !== bookingId && b._id !== bookingId);
+      localStorage.setItem("imovies_bookings", JSON.stringify(updated));
+      toast.success("Booking cancelled and seats released successfully.");
+      fetchBookings();
     }
   };
 

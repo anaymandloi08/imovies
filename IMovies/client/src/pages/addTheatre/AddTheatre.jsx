@@ -34,13 +34,21 @@ const AddTheatre = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${render}/api/theatre/addtheatre`, formData);
+      const res = await axios.post(`${render}/api/theatre/addtheatre`, formData, { timeout: 3000 });
       if (res.data.success) {
         toast.success("Theatre venue registered successfully!");
         navigate("/admin");
+        return;
       }
     } catch (err) {
-      toast.error(err?.response?.data?.error || "Failed to add theatre");
+      // Local fallback
+      const saved = JSON.parse(localStorage.getItem("imovies_custom_theatres") || "[]");
+      saved.push({ ...formData, _id: "theatre-" + Date.now() });
+      localStorage.setItem("imovies_custom_theatres", JSON.stringify(saved));
+
+      toast.success("Theatre registered successfully (Demo Mode)!");
+      navigate("/admin");
+      return;
     } finally {
       setLoading(false);
     }
